@@ -5,14 +5,14 @@ from materials.models import Course, Lesson
 
 
 class User(AbstractUser):
+    username = None
     email = models.EmailField(unique=True, verbose_name="Email")  # Авторизация по email
     phone = models.CharField(max_length=15, verbose_name="Телефон", blank=True, null=True)
     city = models.CharField(max_length=100, verbose_name="Город", blank=True, null=True)
     avatar = models.ImageField(upload_to="avatars/", verbose_name="Аватарка", blank=True, null=True)
 
-    # Заменяем username на email для авторизации
     USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = ["username"]
+    REQUIRED_FIELDS = []
 
     class Meta:
         verbose_name = "Пользователь"
