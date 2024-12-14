@@ -1,8 +1,9 @@
-from rest_framework.viewsets import ModelViewSet
-from rest_framework import filters
 from django_filters.rest_framework import DjangoFilterBackend
-from .models import User, Payment
-from .serializers import UserSerializer, PaymentSerializer
+from rest_framework import filters
+from rest_framework.viewsets import ModelViewSet
+
+from .models import Payment, User
+from .serializers import PaymentSerializer, UserSerializer
 
 
 class UserViewSet(ModelViewSet):
@@ -20,4 +21,6 @@ class PaymentsViewSet(ModelViewSet):
         "lesson",
         "payment_method",
     )
-    ordering_fields = ["payment_date",]
+    ordering_fields = [
+        "payment_date",
+    ]

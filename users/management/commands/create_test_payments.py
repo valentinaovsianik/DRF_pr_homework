@@ -1,8 +1,7 @@
 from django.core.management.base import BaseCommand
-from users.models import Payment, User
+
 from materials.models import Course, Lesson
-from decimal import Decimal
-from random import choice, randint
+from users.models import Payment, User
 
 
 class Command(BaseCommand):
