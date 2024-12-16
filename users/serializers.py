@@ -11,9 +11,10 @@ class PaymentSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    """Сериализатор для пользователя"""
+    """Сериализатор для для вывода и редактирования пользователя"""
     payments = PaymentSerializer(many=True, read_only=True)
 
     class Meta:
         model = User
         fields = "__all__"
+
