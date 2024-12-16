@@ -1,10 +1,15 @@
-from django.urls import path
+from rest_framework.routers import SimpleRouter
 
-from . import views
+from users.apps import UsersConfig
 
-app_name = "users"
+from .views import PaymentsViewSet, UserViewSet
 
+app_name = UsersConfig.name
 
-urlpatterns = [
-    path("", views.UserListView.as_view(), name="user_list"),
-]
+router = SimpleRouter()
+router.register(r"user", UserViewSet, basename="user")
+router.register(r"payments", PaymentsViewSet, basename="payment")
+
+urlpatterns = []
+
+urlpatterns += router.urls
