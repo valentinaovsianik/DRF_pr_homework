@@ -17,6 +17,7 @@ class UserCreateAPIView(CreateAPIView):
     """CRUD для регистрации пользователя"""
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    permission_classes = (AllowAny,)
 
     def perform_create(self, serializer):
         user = serializer.save(is_active=True)
