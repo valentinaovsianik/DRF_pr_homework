@@ -15,6 +15,7 @@ class UserViewSet(ModelViewSet):
 
 class UserCreateAPIView(CreateAPIView):
     """CRUD для регистрации пользователя"""
+
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = (AllowAny,)
