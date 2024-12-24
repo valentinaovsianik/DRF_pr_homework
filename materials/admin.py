@@ -24,5 +24,3 @@ class SubscriptionAdmin(admin.ModelAdmin):
     list_display = ("id", "user", "course")
     search_fields = ("user",)
     search_filter = ("user",)
-
-

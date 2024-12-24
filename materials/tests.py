@@ -1,5 +1,6 @@
-from rest_framework.test import APITestCase
 from rest_framework import status
+from rest_framework.test import APITestCase
+
 from materials.models import Course, Lesson, Subscription
 from users.models import User
 
@@ -81,9 +82,13 @@ class LessonAPITestCase(APITestCase):
         # Создание подписки
         response = self.client.post(self.subscription_url, data)
         self.assertEqual(response.status_code, status.HTTP_200_OK, "Не удалось создать подписку.")
-        self.assertTrue(Subscription.objects.filter(user=self.user, course=self.course).exists(), "Подписка не создана.")
+        self.assertTrue(
+            Subscription.objects.filter(user=self.user, course=self.course).exists(), "Подписка не создана."
+        )
 
         # Удаление подписки
         response = self.client.post(self.subscription_url, data)
         self.assertEqual(response.status_code, status.HTTP_200_OK, "Не удалось удалить подписку.")
-        self.assertFalse(Subscription.objects.filter(user=self.user, course=self.course).exists(), "Подписка не удалена.")
+        self.assertFalse(
+            Subscription.objects.filter(user=self.user, course=self.course).exists(), "Подписка не удалена."
+        )

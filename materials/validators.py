@@ -1,8 +1,11 @@
-from django.core.exceptions import ValidationError
 from urllib.parse import urlparse
+
+from django.core.exceptions import ValidationError
+
 
 class YouTubeURLValidator:
     """Валидатор для проверки ссылки на YouTube"""
+
     allowed_url = {"youtube.com"}
 
     def __init__(self, field="video_url"):

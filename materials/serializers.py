@@ -6,6 +6,7 @@ from .validators import YouTubeURLValidator
 
 class LessonSerializer(serializers.ModelSerializer):
     """Сериализатор для урока"""
+
     video_url = serializers.URLField(validators=[YouTubeURLValidator()])
 
     class Meta:
