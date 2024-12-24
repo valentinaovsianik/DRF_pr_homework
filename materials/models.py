@@ -43,6 +43,7 @@ class Lesson(models.Model):
 
 class Subscription(models.Model):
     """Модель подписки на обновления курса"""
+
     user = models.ForeignKey(
         AUTH_USER_MODEL,
         verbose_name="Владелец",
@@ -55,3 +56,4 @@ class Subscription(models.Model):
     class Meta:
         verbose_name = "Подписка"
         verbose_name_plural = "Подписки"
+        unique_together = ("user", "course")  # Гарантирует уникальность подписки
