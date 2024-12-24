@@ -9,12 +9,14 @@ from rest_framework.viewsets import ModelViewSet
 from users.permissions import IsModerator, IsOwner
 
 from .models import Course, Lesson, Subscription
+from .paginators import CustomPagination
 from .serializers import CourseSerializer, LessonSerializer
 
 
 class CourseViewSet(ModelViewSet):  # Используем ViewSet для реализации всех операций с моделью Курса
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
+    pagination_class = CustomPagination
 
     def get_permissions(self):
         """Ограничение доступа для модератора и владельца"""
@@ -44,6 +46,7 @@ class LessonListAPIView(ListAPIView):
     queryset = Lesson.objects.all()
     serializer_class = LessonSerializer
     permission_classes = [IsAuthenticated]
+    pagination_class = CustomPagination
 
 
 class LessonRetrieveView(RetrieveAPIView):
