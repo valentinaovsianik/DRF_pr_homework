@@ -52,6 +52,8 @@ class Payment(models.Model):
     )
     amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Сумма оплаты")
     payment_method = models.CharField(max_length=10, choices=PAYMENT_METHODS, verbose_name="Способ оплаты")
+    stripe_session_id = models.CharField(max_length=255, blank=True, null=True, verbose_name="ID сессии Stripe")
+    payment_url = models.URLField(blank=True, null=True, verbose_name="Ссылка на оплату")
 
     class Meta:
         verbose_name = "Платеж"
