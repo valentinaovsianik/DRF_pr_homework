@@ -15,6 +15,7 @@ python-dotenv = "^1.0.1"
 django-filter = "^24.3"
 djangorestframework-simplejwt = "^5.3.1"
 coverage = "^7.6.9"
+drf-yasg = "^1.21.8"
 
 
 [tool.poetry.group.dev.dependencies]

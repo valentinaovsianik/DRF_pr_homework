@@ -12,7 +12,6 @@ from .models import Course, Lesson, Subscription
 from .paginators import CustomPagination
 from .serializers import CourseSerializer, LessonSerializer
 
-
 class CourseViewSet(ModelViewSet):  # Используем ViewSet для реализации всех операций с моделью Курса
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
