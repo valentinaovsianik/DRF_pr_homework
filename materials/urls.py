@@ -3,15 +3,8 @@ from rest_framework.routers import SimpleRouter
 
 from materials.apps import MaterialsConfig
 
-from .views import (
-    CourseViewSet,
-    LessonCreateAPIView,
-    LessonDestroyAPIView,
-    LessonListAPIView,
-    LessonRetrieveView,
-    LessonUpdateView,
-    SubscriptionView,
-)
+from .views import (CourseViewSet, LessonCreateAPIView, LessonDestroyAPIView, LessonListAPIView, LessonRetrieveView,
+                    LessonUpdateView, SubscriptionView)
 
 app_name = MaterialsConfig.name
 
