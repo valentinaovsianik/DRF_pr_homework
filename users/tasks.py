@@ -1,7 +1,9 @@
-from celery import shared_task
 from datetime import timedelta
+
+from celery import shared_task
 from django.utils.timezone import now
-from .models import User
+
+from users.models import User
 
 
 @shared_task

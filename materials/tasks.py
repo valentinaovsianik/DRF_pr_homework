@@ -1,10 +1,12 @@
 from celery import shared_task
-from django.core.mail import send_mail
 from django.conf import settings
+from django.core.mail import send_mail
+
 from .models import Course, Subscription
 
+
 @shared_task
-def send_course_update_email(course_id, user_emails):
+def send_course_update_email(course_id):
     """Асинхронная задача для отправки сообщения об обновлении курса"""
     try:
         course = Course.objects.get(id=course_id)
@@ -21,8 +23,3 @@ def send_course_update_email(course_id, user_emails):
         return f"Курс с ID {course_id} не найден."
     except Exception as e:
         return f"Ошибка при отправке email: {str(e)}"
-
-
-@shared_task
-def example_task():
-    return "Hello, Celery!"
