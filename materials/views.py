@@ -13,6 +13,7 @@ from users.permissions import IsModerator, IsOwner
 from .models import Course, Lesson, Subscription
 from .paginators import CustomPagination
 from .serializers import CourseSerializer, LessonSerializer
+from .tasks import send_course_update_email
 
 
 @method_decorator(name="list", decorator=swagger_auto_schema(operation_description="Course ViewSet"))
@@ -33,6 +34,12 @@ class CourseViewSet(ModelViewSet):  # Используем ViewSet для реа
 
     def perform_create(self, serializer):  # Привязка владельца при создании курса
         serializer.save(owner=self.request.user)
+
+    def perform_update(self, serializer):
+        """Добавление асинхронной задачи после обновления курса"""
+        course = serializer.save()
+        # Запуск задачи отправки email подписчикам курса
+        send_course_update_email.delay(course.id)
 
 
 # CRUD для модели урока через Generic-классы
