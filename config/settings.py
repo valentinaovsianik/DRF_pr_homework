@@ -146,3 +146,13 @@ EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
+
+# Запуск задачи по расписанию через celery-beat
+CELERY_BEAT_SCHEDULE = {
+    "deactivate_inactive_users": {
+        "task": "users.tasks.deactivate_inactive_users",
+        "schedule": timedelta(days=1),
+    },
+}
