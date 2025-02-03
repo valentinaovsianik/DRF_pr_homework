@@ -16,7 +16,7 @@ STRIPE_API_KEY = os.getenv("STRIPE_API_KEY")
 
 DEBUG = True if os.getenv("DEBUG") == "True" else False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 INSTALLED_APPS = [
