@@ -50,7 +50,8 @@ jobs:
         run: poetry install
 
       - name: Run tests
-        run: poetry run python manage.py test
+        run: |
+          python manage.py test
 
   build:
     needs: tests
