@@ -44,16 +44,13 @@ jobs:
 
       - name: Create .env file
         run: |
-          echo "${{ secrets.DOTENV }}" | sed '/^#/d' > .env
+          echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" > .env
 
       - name: Install dependencies
         run: poetry install
 
       - name: Run tests
-        env:
-          SECRET_KEY: ${{ secrets.SECRET_KEY }}
-        run: |
-          poetry run python manage.py test
+        run: poetry run python manage.py test
 
   build:
     needs: tests
