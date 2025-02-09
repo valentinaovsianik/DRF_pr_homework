@@ -25,6 +25,20 @@ jobs:
   tests:
     needs: lint
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: test_db
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     steps:
       - name: Check out code
         uses: actions/checkout@v3
@@ -38,6 +52,7 @@ jobs:
         run: |
           echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" > .env
           echo "DEBUG=True" >> .env
+          echo "DATABASE_URL=postgres://postgres:postgres@localhost:5432/test_db" >> .env
           echo "${{ secrets.DOTENV }}" | sed 's/\r//' >> .env
 
       - name: Install dependencies
