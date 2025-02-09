@@ -36,7 +36,9 @@ jobs:
 
       - name: Create .env file
         run: |
-          echo "${{ secrets.DOTENV }}" | sed '/^#/d' > .env
+          echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" > .env
+          echo "DEBUG=True" >> .env
+          echo "${{ secrets.DOTENV }}" >> 
 
       - name: Install dependencies
         run: |
@@ -61,7 +63,7 @@ jobs:
         run: |
           echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" > .env
           echo "DEBUG=True" >> .env
-          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
+          echo "${{ secrets.DOTENV }}" >> .env
 
 
       - name: Log in Docker Hub
