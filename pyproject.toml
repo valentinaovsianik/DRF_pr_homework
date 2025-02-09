@@ -5,7 +5,9 @@ description = ""
 authors = ["Your Name <you@example.com>"]
 readme = "README.md"
 packages = [
-    { include = "drf-homework" }
+    { include = "config" },
+    { include = "materials" },
+    { include = "users" }
 ]
 
 [tool.poetry.dependencies]
