@@ -53,6 +53,24 @@ jobs:
           echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" > .env
           echo "DEBUG=True" >> .env
           echo "${{ secrets.DOTENV }}" | sed 's/\r//' >> .env
+      
+          # Проверка наличия переменных
+          if ! grep -q "DATABASE_USER=" .env; then
+            echo "DATABASE_USER=postgres" >> .env
+          fi
+          if ! grep -q "DATABASE_PASSWORD=" .env; then
+            echo "DATABASE_PASSWORD=postgres" >> .env
+          fi
+          if ! grep -q "DATABASE_NAME=" .env; then
+            echo "DATABASE_NAME=test_db" >> .env
+          fi
+          if ! grep -q "DATABASE_HOST=" .env; then
+            echo "DATABASE_HOST=localhost" >> .env
+          fi
+          if ! grep -q "DATABASE_PORT=" .env; then
+            echo "DATABASE_PORT=5432" >> .env
+          fi
+      
           DATABASE_USER=$(grep DATABASE_USER .env | cut -d '=' -f2)
           DATABASE_PASSWORD=$(grep DATABASE_PASSWORD .env | cut -d '=' -f2)
           DATABASE_NAME=$(grep DATABASE_NAME .env | cut -d '=' -f2)
@@ -65,12 +83,21 @@ jobs:
           python -m pip install --upgrade pip
           pip install --no-cache-dir -r requirements.txt
 
+      - name: Wait for PostgreSQL to be ready
+        run: |
+          for i in {1..10}; do
+            if pg_isready -h localhost -p 5432 -U postgres -d test_db; then
+              break
+            fi
+            sleep 2
+          done
+
       - name: Run migrations
-        run: python manage.py migrate --no-input
+        run: python manage.py migrate --no-input --verbosity 2
 
       - name: Run tests
         run: |
-          python manage.py test
+          python manage.py test --verbosity 2
 
   build:
     needs: tests
