@@ -37,17 +37,17 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Create .env file
+        run: |
+          echo "${{ secrets.DOTENV }}" | sed '/^#/d' > .env
+
       - name: Install Poetry
         uses: abatilo/actions-poetry@v2
         with:
           poetry-version: '2.0.0'
 
-      - name: Create .env file
-        run: |
-          echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" > .env
-
       - name: Install dependencies
-        run: poetry install
+        run: poetry install --no-root
 
       - name: Run tests
         run: poetry run python manage.py test
