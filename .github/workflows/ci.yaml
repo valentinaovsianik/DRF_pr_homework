@@ -51,7 +51,7 @@ jobs:
 
       - name: Run tests
         run: |
-          python manage.py test
+          poetry run python manage.py test
 
   build:
     needs: tests
