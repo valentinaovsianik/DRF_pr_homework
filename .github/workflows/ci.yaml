@@ -25,22 +25,8 @@ jobs:
   tests:
     needs: lint
     runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: postgres:latest
-        env:
-          POSTGRES_DB: ${{ secrets.DOTENV_DATABASE_NAME }}
-          POSTGRES_USER: ${{ secrets.DOTENV_DATABASE_USER }}
-          POSTGRES_PASSWORD: ${{ secrets.DOTENV_DATABASE_PASSWORD }}
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
     steps:
-      - name: Check repository
+      - name: Check out code
         uses: actions/checkout@v3
 
       - name: Set up Python
@@ -48,19 +34,16 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Create .env file
+        run: |
+          echo "${{ secrets.DOTENV }}" | sed '/^#/d' > .env
+
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install --no-cache-dir -r requirements.txt
 
       - name: Run tests
-        env:
-          DATABASE_NAME: ${{ secrets.DOTENV_DATABASE_NAME }}
-          DATABASE_USER: ${{ secrets.DOTENV_DATABASE_USER }}
-          DATABASE_PASSWORD: ${{ secrets.DOTENV_DATABASE_PASSWORD }}
-          DATABASE_HOST: ${{ secrets.DOTENV_DATABASE_HOST }}
-          DATABASE_PORT: ${{ secrets.DOTENV_DATABASE_PORT }}
-          SECRET_KEY: ${{ secrets.SECRET_KEY }}
         run: |
           python manage.py test --verbosity 2
 
