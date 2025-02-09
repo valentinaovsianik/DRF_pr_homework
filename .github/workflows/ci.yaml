@@ -34,7 +34,7 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Create .env file
+      - name: Create .env file for tests
         run: |
           echo "${{ secrets.DOTENV }}" | sed '/^#/d' > .env
 
@@ -71,9 +71,10 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v3
 
-      - name: Create .env file
+      - name: Create .env file for deploy
         run: |
-          echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" > .env
+          echo "${{ secrets.DOTENV }}" | sed '/^#/d' > .env
+          echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env
 
       - name: Set up SSH
         uses: webfactory/ssh-agent@v0.8.1
