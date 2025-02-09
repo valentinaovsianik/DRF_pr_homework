@@ -38,7 +38,7 @@ jobs:
         run: |
           echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" > .env
           echo "DEBUG=True" >> .env
-          echo "${{ secrets.DOTENV }}" >> 
+          echo "${{ secrets.DOTENV }}" | sed 's/\r//' >> .env
 
       - name: Install dependencies
         run: |
@@ -63,7 +63,7 @@ jobs:
         run: |
           echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" > .env
           echo "DEBUG=True" >> .env
-          echo "${{ secrets.DOTENV }}" >> .env
+          echo "${{ secrets.DOTENV }}" | sed 's/\r//' >> .env
 
 
       - name: Log in Docker Hub
