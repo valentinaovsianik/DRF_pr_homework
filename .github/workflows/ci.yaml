@@ -25,21 +25,6 @@ jobs:
   tests:
     needs: lint
     runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: postgres:15
-        env:
-          POSTGRES_USER: user
-          POSTGRES_PASSWORD: password
-          POSTGRES_DB: test_db
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd "pg_isready -U user -d test_db"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-
     steps:
       - name: Check out code
         uses: actions/checkout@v3
@@ -49,16 +34,14 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Create .env file
+        run: |
+          echo "${{ secrets.DOTENV }}" | sed '/^#/d' > .env
+
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install --no-cache-dir -r requirements.txt
-
-      - name: Create .env file
-        run: |
-          echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" > .env
-          echo "DEBUG=True" >> .env
-          echo "DATABASE_URL=postgresql://user:password@localhost:5432/test_db" >> .env
 
       - name: Run migrations
         run: python manage.py migrate
