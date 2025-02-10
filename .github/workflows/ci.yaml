@@ -85,8 +85,7 @@ jobs:
           ssh-add ~/.ssh/id_rsa
 
       - name: Log in to Docker Hub
-        run: |
-          echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
 
       - name: Deploy to Server
         env:
