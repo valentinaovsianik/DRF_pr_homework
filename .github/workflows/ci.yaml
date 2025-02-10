@@ -81,11 +81,17 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
+          chmod 700 ~/.ssh
           eval $(ssh-agent -s)
           ssh-add ~/.ssh/id_rsa
 
       - name: Log in to Docker Hub
-        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
+        run: |
+          if [ -z "${{ secrets.DOCKER_PASSWORD }}" ]; then
+            echo "Docker password is empty!" >&2
+            exit 1
+          fi
+          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
 
       - name: Deploy to Server
         env:
@@ -96,5 +102,5 @@ jobs:
             docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/drf-homework:${{ github.sha }}
             docker stop myapp || true
             docker rm myapp || true
-            docker run -d --name myapp -p 80:8000 --env-file /path/to/.env ${{ secrets.DOCKER_HUB_USERNAME }}/drf-homework:${{ github.sha }}
+            docker run -d --name myapp -p 80:8000 --env-file ~/.env ${{ secrets.DOCKER_HUB_USERNAME }}/drf-homework:${{ github.sha }}
           EOF
