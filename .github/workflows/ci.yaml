@@ -85,13 +85,8 @@ jobs:
           eval $(ssh-agent -s)
           ssh-add ~/.ssh/id_rsa
 
-      - name: Log in to Docker Hub
-        run: |
-          if [ -z "${{ secrets.DOCKER_PASSWORD }}" ]; then
-            echo "Docker password is empty!" >&2
-            exit 1
-          fi
-          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
+      - name: Log in Docker Hub
+        run: echo "${{ secrets.DOCKER_ACCESS_TOKEN }}" | docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} --password-stdin
 
       - name: Deploy to Server
         env:
