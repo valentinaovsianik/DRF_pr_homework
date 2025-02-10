@@ -1,4 +1,5 @@
 import os
+import sys
 from datetime import timedelta
 from pathlib import Path
 
@@ -16,7 +17,7 @@ STRIPE_API_KEY = os.getenv("STRIPE_API_KEY")
 
 DEBUG = True if os.getenv("DEBUG") == "True" else False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ["*", "localhost", "127.0.0.1"]
 
 
 INSTALLED_APPS = [
@@ -55,16 +56,24 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "config.urls"
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": os.getenv("DATABASE_NAME"),
-        "USER": os.getenv("DATABASE_USER"),
-        "PASSWORD": os.getenv("DATABASE_PASSWORD"),
-        "HOST": os.getenv("DATABASE_HOST"),
-        "PORT": os.getenv("DATABASE_PORT"),
+if 'test' in sys.argv:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'test_db.sqlite3',
+        }
     }
-}
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql_psycopg2",
+            "NAME": os.getenv("DATABASE_NAME"),
+            "USER": os.getenv("DATABASE_USER"),
+            "PASSWORD": os.getenv("DATABASE_PASSWORD"),
+            "HOST": os.getenv("DATABASE_HOST"),
+            "PORT": os.getenv("DATABASE_PORT"),
+        }
+    }
 
 TEMPLATES = [
     {

@@ -1,8 +1,8 @@
 # Исключение ненужных файлов и папок
+venv/
 .git/
 __pycache__/
-venv/
-*.log
 *.pyc
-*.swp
+*.pyo
+*.pyd
 .env
