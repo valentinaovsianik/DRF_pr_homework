@@ -91,13 +91,14 @@ jobs:
       - name: Deploy to Server
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+          DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
+          DOCKER_ACCESS_TOKEN: ${{ secrets.DOCKER_ACCESS_TOKEN }}
         run: |
           scp -o StrictHostKeyChecking=no .env ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }}:~/.env
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << EOF
             echo "$DOCKER_PASSWORD" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
-            docker pull "${{ secrets.DOCKER_HUB_USERNAME }}/drf-homework:${{ github.sha }}"
+            docker pull "${{ secrets.DOCKER_HUB_USERNAME }}/myapp:${{ github.sha }}"
             docker stop myapp || true
             docker rm myapp || true
-            docker run -d --name myapp -p 80:8000 --env-file ~/.env "${{ secrets.DOCKER_HUB_USERNAME }}/drf-homework:${{ github.sha }}"
+            docker run -d --name myapp -p 80:8000 --env-file ~/.env "$DOCKER_HUB_USERNAME/myapp:${{ github.sha }}"
           EOF
