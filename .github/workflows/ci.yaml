@@ -74,13 +74,20 @@ jobs:
 
       - name: Create .env file for deploy
         run: |
-          echo "${{ secrets.DOTENV }}" | sed '/^#/d' > .env
+          printf "%s\n" "${{ secrets.DOTENV }}" | sed '/^#/d' > .env
           echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env
 
       - name: Set up SSH
         uses: webfactory/ssh-agent@v0.9.0
         with:
-          ssh-private-key: ${{ secrets.SSH_KEY }}
+          ssh-private-key: |
+            ${{ secrets.SSH_KEY }}
+
+      - name: Test SSH connection
+        run: ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} "echo Connected successfully"
+
+      - name: Check available Docker images
+        run: docker images ${{ secrets.DOCKER_HUB_USERNAME }}/myapp
 
       - name: Deploy to Server
         run: |
