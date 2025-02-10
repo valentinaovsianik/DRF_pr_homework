@@ -68,9 +68,13 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Connect to Server and Deploy
-        run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
+      - name: Deploy to Server
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
             echo "Pulling latest Docker image..."
             docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/myapp:${{ github.sha }}
 
@@ -85,4 +89,3 @@ jobs:
 
             echo "Cleaning up old images..."
             docker image prune -f
-          EOF
