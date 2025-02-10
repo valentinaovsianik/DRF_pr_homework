@@ -69,6 +69,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Create .env file
+        run: |
+          echo "${{ secrets.DOTENV }}" | sed '/^#/d' > .env
+
       - name: Set up SSH
         run: |
           mkdir -p ~/.ssh
